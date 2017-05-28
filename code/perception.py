@@ -17,6 +17,34 @@ def color_thresh(img, rgb_thresh=(160, 160, 160)):
     # Return the binary image
     return color_select
 
+def obstacle_thresh(img, rgb_thresh=(160, 160, 160)):
+    # Create an array of zeros same xy size as img, but single channel
+    obstacle_select = np.zeros_like(img[:,:,0])
+    # Require that each pixel be above all three threshold values in RGB
+    # above_thresh will now contain a boolean array with "True"
+    # where threshold was met
+    under_tresh =  (img[:,:,0] <= rgb_thresh[0]) \
+                 & (img[:,:,1] <= rgb_thresh[1]) \
+                 & (img[:,:,2] <= rgb_thresh[2])
+    # Index the array of zeros with the boolean array and set to 1
+    obstacle_select[under_tresh] = 1
+    # Return the binary image
+    return obstacle_select
+
+def rock_thresh(img, rgb_low=(140, 110, 0), rgb_up=(245, 211, 100)):
+    # Create an array of zeros same xy size as img, but single channel
+    rock_select = np.zeros_like(img[:,:,0])
+    # Require that each pixel be above all three threshold values in RGB
+    # above_thresh will now contain a boolean array with "True"
+    # where threshold was met
+    tresh =  ((img[:,:,0] <= rgb_up[0]) & (img[:,:,0] >= rgb_low[0])) \
+           & ((img[:,:,1] <= rgb_up[1]) & (img[:,:,1] >= rgb_low[1])) \
+           & ((img[:,:,2] <= rgb_up[2]) & (img[:,:,2] >= rgb_low[2]))
+    # Index the array of zeros with the boolean array and set to 1
+    rock_select[tresh] = 1
+    # Return the binary image
+    return rock_select
+
 # Define a function to convert to rover-centric coordinates
 def rover_coords(binary_img):
     # Identify nonzero pixels
@@ -41,7 +69,7 @@ def to_polar_coords(x_pixel, y_pixel):
 # Define a function to apply a rotation to pixel positions
 def rotate_pix(xpix, ypix, yaw):
     # Convert yaw to radians
-     yaw_rad = yaw * np.pi / 180
+    yaw_rad = yaw * np.pi / 180
     # Apply a rotation
     xpix_rotated = (xpix * np.cos(yaw_rad)) - (ypix * np.sin(yaw_rad))
     ypix_rotated = (xpix * np.sin(yaw_rad)) + (ypix * np.cos(yaw_rad))
@@ -51,7 +79,7 @@ def rotate_pix(xpix, ypix, yaw):
 # Define a function to perform a translation
 def translate_pix(xpix_rot, ypix_rot, xpos, ypos, scale): 
     # Apply a scaling and a translation
-     xpix_translated = (xpix_rot / scale) + xpos
+    xpix_translated = (xpix_rot / scale) + xpos
     ypix_translated = (ypix_rot / scale) + ypos
     # Return the result  
     return xpix_translated, ypix_translated
@@ -81,16 +109,15 @@ def perspect_transform(img, src, dst):
 # Apply the above functions in succession and update the Rover state accordingly
 def perception_step(Rover):
     # Perform perception steps to update Rover()
-    # TODO: 
     # NOTE: camera image is coming to you in Rover.img
     # 1) Define source and destination points for perspective transform
     dst_size = 5 
     bottom_offset = 6
     source = np.float32([[14, 140], [301 ,140],[200, 96], [118, 96]]) 
-    destination = np.float32([[image.shape[1]/2 - dst_size, image.shape[0] - bottom_offset],
-                  [image.shape[1]/2 + dst_size, image.shape[0] - bottom_offset],
-                  [image.shape[1]/2 + dst_size, image.shape[0] - 2*dst_size - bottom_offset], 
-                  [image.shape[1]/2 - dst_size, image.shape[0] - 2*dst_size - bottom_offset],
+    destination = np.float32([[Rover.img.shape[1]/2 - dst_size, Rover.img.shape[0] - bottom_offset],
+                  [Rover.img.shape[1]/2 + dst_size, Rover.img.shape[0] - bottom_offset],
+                  [Rover.img.shape[1]/2 + dst_size, Rover.img.shape[0] - 2*dst_size - bottom_offset], 
+                  [Rover.img.shape[1]/2 - dst_size, Rover.img.shape[0] - 2*dst_size - bottom_offset],
                   ])
     # 2) Apply perspective transform
     warped = perspect_transform(Rover.img, source, destination)
@@ -134,7 +161,8 @@ def perception_step(Rover):
         #          Rover.worldmap[navigable_y_world, navigable_x_world, 2] += 1
     Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] += 1
     Rover.worldmap[gold_y_world, gold_x_world, 1] += 1
-    Rover.worldmap[navigable_y_world, navigable_x_world, 2] += 1    
+    Rover.worldmap[navigable_y_world, navigable_x_world, 2] += 1 
+       
     # 8) Convert rover-centric pixel positions to polar coordinates
     rover_centric_pixel_distances, rover_centric_angles = to_polar_coords(xpix_way, ypix_way) 
     # Update Rover pixel distances and angles
