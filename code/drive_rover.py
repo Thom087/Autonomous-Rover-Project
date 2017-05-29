@@ -78,6 +78,7 @@ class RoverState():
 # Initialize our rover 
 Rover = RoverState()
 
+
 # Variables to track frames per second (FPS)
 # Intitialize frame counter
 frame_counter = 0
