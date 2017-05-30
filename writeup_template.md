@@ -1,7 +1,5 @@
 ## Project: Search and Sample Return
-
 ---
-
 
 **The goals / steps of this project are the following:**  
 
@@ -24,6 +22,13 @@
 [image1]: ./misc/rover_image.jpg
 [image2]: ./calibration_images/example_grid1.jpg
 [image3]: ./calibration_images/example_rock1.jpg 
+[image4]: ./calibration_images/rock_sample.jpg 
+[image5]: ./calibration_images/obstacle_sample.jpg 
+[image6]: ./calibration_images/image_process3.jpg 
+[image5]: ./calibration_images/obstacle_sample.jpg 
+[image5]: ./calibration_images/obstacle_sample.jpg 
+[image5]: ./calibration_images/obstacle_sample.jpg 
+
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/916/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -37,14 +42,33 @@ You're reading it!
 
 ### Notebook Analysis
 #### 1. Run the functions provided in the notebook on test images (first with the test data provided, next on data you have recorded). Add/modify functions to allow for color selection of obstacles and rock samples.
-Here is an example of how to include an image in your writeup.
 
-![alt text][image1]
+I made 2 new functions, one for obstacles and one for rock samples:
 
-#### 1. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
-And another! 
+![alt text][image4]
 
-![alt text][image2]
+Where I choosed a RGB of (140, 110, 0) to (200, 180, 100) to find this out, I took some bright images and analysed the RGB as well as for a dark rock sample image.
+In the image you can see the rock sample in the perspective view as well as thresholded.
+
+For obstacles I mainly did the inverse of the color_thresh:
+
+![alt text][image5]
+I just checked if all the RGB's are less or equal than 160 which results than in a list of booleans.
+
+#### 2. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
+
+* Apply all the threshold function to the warped picture (rock, obstacle and navigable terrain)
+* Convert them to rover centric coordinates, therefore I applied just the rover_coords function to the thresed list what gave 
+  me the x and y coordinates of the rover centric view 
+* Convert to world coordinates, use the pix_to_world function with the rotation and translation to the expected robot position / yaw
+  I did this also for all three function (rock, obstacles and navigable terrain)
+  
+![alt text][image6]
+
+* The worldmap is then created also for all this three functions with the obstacles on the red layer (255,0,0), the rocks on the green layer and the navigable terrain on the blue layer. The more images it had of the same location to more the color was added, which can be figured out in the video.
+* To show the image on the right side I just multiplied it with 255 to see the full color
+
+
 ### Autonomous Navigation and Mapping
 
 #### 1. Fill in the `perception_step()` (at the bottom of the `perception.py` script) and `decision_step()` (in `decision.py`) functions in the autonomous mapping scripts and an explanation is provided in the writeup of how and why these functions were modified as they were.
