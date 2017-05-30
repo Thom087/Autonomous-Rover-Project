@@ -20,11 +20,10 @@
 [//]: # (Image References)
 
 [image1]: ./misc/rover_image.jpg
-[image2]: ./calibration_images/example_grid1.jpg
-[image3]: ./calibration_images/example_rock1.jpg 
-[image4]: ./calibration_images/rock_sample.jpg 
-[image5]: ./misc/obstacle_sample.jpg 
-[image6]: ./misc/image_process3.jpg 
+[image2]: ./misc/rock_sample.jpg 
+[image3]: ./misc/obstacle_sample.jpg 
+[image4]: ./misc/image_process3.jpg 
+[image5]: ./calibration_images/example_rock2.jpg
 
 
 
@@ -43,14 +42,14 @@ You're reading it!
 
 I made 2 new functions, one for obstacles and one for rock samples:
 
-![alt text][image4]
+![alt text][image2]
 
 Where I choosed a RGB of (140, 110, 0) to (200, 180, 100) to find this out, I took some bright images and analysed the RGB as well as for a dark rock sample image.
 In the image you can see the rock sample in the perspective view as well as thresholded.
 
 For obstacles I mainly did the inverse of the color_thresh:
 
-![alt text][image5]
+![alt text][image3]
 I just checked if all the RGB's are less or equal than 160 which results than in a list of booleans.
 
 #### 2. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
@@ -61,7 +60,7 @@ I just checked if all the RGB's are less or equal than 160 which results than in
 * Convert to world coordinates, use the pix_to_world function with the rotation and translation to the expected robot position / yaw
   I did this also for all three function (rock, obstacles and navigable terrain)
   
-![alt text][image6]
+![alt text][image4]
 
 * The worldmap is then created also for all this three functions with the obstacles on the red layer (255,0,0), the rocks on the green layer and the navigable terrain on the blue layer. The more images it had of the same location to more the color was added, which can be figured out in the video.
 * To show the image on the right side I just multiplied it with 255 to see the full color
@@ -91,7 +90,7 @@ To organize the code better I wrote some function of forward motion, steering, s
 * Sometimes the robot turned just in a circle, where I analysed that I should take the distorted view of the robot when it fully steers +-15°, therefore I just subtracted the steering angle divided by 3 from the avg_nav_angle. After this improvement the robot did not went again in a circle
 * Sometimes the robot got stucked in some rocks, I tried to solve this with some checking of the velo of 0 with some time but unfortunately without success.. I could not store the old velo somewhere and then compare it after a perpendicular time with the actual velo to make a steering.. 
 
-![alt text][image3]
+![alt text][image5]
 
 **Note: running the simulator with different choices of resolution and graphics quality may produce different results, particularly on different machines!  Make a note of your simulator settings (resolution and graphics quality set on launch) and frames per second (FPS output to terminal by `drive_rover.py`) in your writeup when you submit the project so your reviewer can reproduce your results.**
 
