@@ -23,7 +23,7 @@
 [image2]: ./misc/rock_sample.JPG
 [image3]: ./misc/obstacle_sample.JPG
 [image4]: ./misc/image_process3.JPG 
-[image5]: ./calibration_images/example_rock2.jpg
+[image5]: ./misc/obstacle.jpg
 
 
 
