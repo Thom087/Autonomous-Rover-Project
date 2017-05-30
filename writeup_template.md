@@ -71,7 +71,7 @@ I just checked if all the RGB's are less or equal than 160 which results than in
 
 #### 1. Fill in the `perception_step()` (at the bottom of the `perception.py` script) and `decision_step()` (in `decision.py`) functions in the autonomous mapping scripts and an explanation is provided in the writeup of how and why these functions were modified as they were.
 * I used the function I tested in the notebook. Therefore I defined again the same functions: color_thresh, obstacle_thresh, and rock_thresh. The rotate and the translate functions I also had to modify, because they were empty.
-** For the perception_step() 
+##### For the perception_step() 
 * I began with the some variables including the calibration of source to destination
 * Next I applied the perspective transform
 * Then the three color threshold functions (obstacle, rock and navigable terrain)
@@ -85,7 +85,7 @@ I just checked if all the RGB's are less or equal than 160 which results than in
 #### 2. Launching in autonomous mode your rover can navigate and map autonomously.  Explain your results and how you might improve them in your writeup.
 The rover could find out 90% of the rocks. So I had after 40% of mapping at least one rock, sometimes even 4 depending where they lie. The fidelity was between 60% and 70%.
 To organize the code better I wrote some function of forward motion, steering, stopping and turning. I neglected to make the dicision out of the rover mode instead I used the velocity of the rover.
-** Possible improvement
+##### Possible improvement
 * To get all rocks the threshold should be more imporved, I should make more images of rocks in different location to analyse the RGB
 * To get more fidelity the threshold of navigable terrain, as well as the calibration should maybe rechecked
 * Sometimes the robot turned just in a circle, where I analysed that I should take the distorted view of the robot when it fully steers +-15°, therefore I just subtracted the steering angle divided by 3 from the avg_nav_angle. After this improvement the robot did not went again in a circle
