@@ -45,5 +45,3 @@ Then launch the simulator and choose "Autonomous Mode".  The rover should drive 
 
 **Note: running the simulator with different choices of resolution and graphics quality may produce different results!  Make a note of your simulator settings in your writeup when you submit the project.**
 
-
-# Autonomous-Rover-Project
