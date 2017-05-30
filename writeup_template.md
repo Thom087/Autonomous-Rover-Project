@@ -20,9 +20,9 @@
 [//]: # (Image References)
 
 [image1]: ./misc/rover_image.jpg
-[image2]: ./misc/rock_sample.jpg 
-[image3]: ./misc/obstacle_sample.jpg 
-[image4]: ./misc/image_process3.jpg 
+[image2]: ./misc/rock_sample.JPG
+[image3]: ./misc/obstacle_sample.JPG
+[image4]: ./misc/image_process3.JPG 
 [image5]: ./calibration_images/example_rock2.jpg
 
 
